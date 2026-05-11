@@ -69,26 +69,40 @@ export interface Config {
   collections: {
     users: User;
     media: Media;
+    pages: Page;
     'payload-kv': PayloadKv;
+    'payload-folders': FolderInterface;
     'payload-locked-documents': PayloadLockedDocument;
     'payload-preferences': PayloadPreference;
     'payload-migrations': PayloadMigration;
   };
-  collectionsJoins: {};
+  collectionsJoins: {
+    'payload-folders': {
+      documentsAndFolders: 'payload-folders' | 'pages';
+    };
+  };
   collectionsSelect: {
     users: UsersSelect<false> | UsersSelect<true>;
     media: MediaSelect<false> | MediaSelect<true>;
+    pages: PagesSelect<false> | PagesSelect<true>;
     'payload-kv': PayloadKvSelect<false> | PayloadKvSelect<true>;
+    'payload-folders': PayloadFoldersSelect<false> | PayloadFoldersSelect<true>;
     'payload-locked-documents': PayloadLockedDocumentsSelect<false> | PayloadLockedDocumentsSelect<true>;
     'payload-preferences': PayloadPreferencesSelect<false> | PayloadPreferencesSelect<true>;
     'payload-migrations': PayloadMigrationsSelect<false> | PayloadMigrationsSelect<true>;
   };
   db: {
-    defaultIDType: string;
+    defaultIDType: number;
   };
   fallbackLocale: null;
-  globals: {};
-  globalsSelect: {};
+  globals: {
+    navbar: Navbar;
+    footer: Footer;
+  };
+  globalsSelect: {
+    navbar: NavbarSelect<false> | NavbarSelect<true>;
+    footer: FooterSelect<false> | FooterSelect<true>;
+  };
   locale: null;
   user: User & {
     collection: 'users';
@@ -121,7 +135,7 @@ export interface UserAuthOperations {
  * via the `definition` "users".
  */
 export interface User {
-  id: string;
+  id: number;
   updatedAt: string;
   createdAt: string;
   email: string;
@@ -145,7 +159,7 @@ export interface User {
  * via the `definition` "media".
  */
 export interface Media {
-  id: string;
+  id: number;
   alt: string;
   updatedAt: string;
   createdAt: string;
@@ -158,13 +172,202 @@ export interface Media {
   height?: number | null;
   focalX?: number | null;
   focalY?: number | null;
+  sizes?: {
+    thumbnail?: {
+      url?: string | null;
+      width?: number | null;
+      height?: number | null;
+      mimeType?: string | null;
+      filesize?: number | null;
+      filename?: string | null;
+    };
+    square?: {
+      url?: string | null;
+      width?: number | null;
+      height?: number | null;
+      mimeType?: string | null;
+      filesize?: number | null;
+      filename?: string | null;
+    };
+    small?: {
+      url?: string | null;
+      width?: number | null;
+      height?: number | null;
+      mimeType?: string | null;
+      filesize?: number | null;
+      filename?: string | null;
+    };
+    medium?: {
+      url?: string | null;
+      width?: number | null;
+      height?: number | null;
+      mimeType?: string | null;
+      filesize?: number | null;
+      filename?: string | null;
+    };
+    large?: {
+      url?: string | null;
+      width?: number | null;
+      height?: number | null;
+      mimeType?: string | null;
+      filesize?: number | null;
+      filename?: string | null;
+    };
+    xlarge?: {
+      url?: string | null;
+      width?: number | null;
+      height?: number | null;
+      mimeType?: string | null;
+      filesize?: number | null;
+      filename?: string | null;
+    };
+    og?: {
+      url?: string | null;
+      width?: number | null;
+      height?: number | null;
+      mimeType?: string | null;
+      filesize?: number | null;
+      filename?: string | null;
+    };
+  };
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "pages".
+ */
+export interface Page {
+  id: number;
+  title: string;
+  slug: string;
+  heroSize?: ('large' | 'small') | null;
+  heroText: string;
+  pageContent?: (WavySection | ShowcaseWavySection)[] | null;
+  folder?: (number | null) | FolderInterface;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "WavySection".
+ */
+export interface WavySection {
+  depth: 'foreground' | 'background';
+  highlightImage?: (number | null) | Media;
+  layout: 'oneColumn' | 'twoColumn';
+  content?: (TextContent | ImageContent)[] | null;
+  columnOneContent?: (TextContent | ImageContent)[] | null;
+  columnTwoContent?: (TextContent | ImageContent)[] | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'wavy-section';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "TextContent".
+ */
+export interface TextContent {
+  title: string;
+  richText?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  links?:
+    | {
+        link?: {
+          type?: ('internal' | 'external' | 'media') | null;
+          newTab?: boolean | null;
+          internalLink?: (number | null) | Page;
+          externalLink?: string | null;
+          mediaLink?: (number | null) | Media;
+          linkText?: string | null;
+        };
+        id?: string | null;
+      }[]
+    | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'text-content';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ImageContent".
+ */
+export interface ImageContent {
+  image: number | Media;
+  caption?: string | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'image-content';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ShowcaseWavySection".
+ */
+export interface ShowcaseWavySection {
+  upperContent: {
+    depth: 'foreground' | 'background';
+    highlightImage?: (number | null) | Media;
+    layout: 'oneColumn' | 'twoColumn';
+    content?: (TextContent | ImageContent)[] | null;
+    columnOneContent?: (TextContent | ImageContent)[] | null;
+    columnTwoContent?: (TextContent | ImageContent)[] | null;
+  };
+  showcaseImage?: (number | null) | Media;
+  lowerContent: {
+    depth: 'foreground' | 'background';
+    highlightImage?: (number | null) | Media;
+    layout: 'oneColumn' | 'twoColumn';
+    content?: (TextContent | ImageContent)[] | null;
+    columnOneContent?: (TextContent | ImageContent)[] | null;
+    columnTwoContent?: (TextContent | ImageContent)[] | null;
+  };
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'showcase-wavy-section';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "payload-folders".
+ */
+export interface FolderInterface {
+  id: number;
+  name: string;
+  folder?: (number | null) | FolderInterface;
+  documentsAndFolders?: {
+    docs?: (
+      | {
+          relationTo?: 'payload-folders';
+          value: number | FolderInterface;
+        }
+      | {
+          relationTo?: 'pages';
+          value: number | Page;
+        }
+    )[];
+    hasNextPage?: boolean;
+    totalDocs?: number;
+  };
+  folderType?: 'pages'[] | null;
+  updatedAt: string;
+  createdAt: string;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "payload-kv".
  */
 export interface PayloadKv {
-  id: string;
+  id: number;
   key: string;
   data:
     | {
@@ -181,20 +384,28 @@ export interface PayloadKv {
  * via the `definition` "payload-locked-documents".
  */
 export interface PayloadLockedDocument {
-  id: string;
+  id: number;
   document?:
     | ({
         relationTo: 'users';
-        value: string | User;
+        value: number | User;
       } | null)
     | ({
         relationTo: 'media';
-        value: string | Media;
+        value: number | Media;
+      } | null)
+    | ({
+        relationTo: 'pages';
+        value: number | Page;
+      } | null)
+    | ({
+        relationTo: 'payload-folders';
+        value: number | FolderInterface;
       } | null);
   globalSlug?: string | null;
   user: {
     relationTo: 'users';
-    value: string | User;
+    value: number | User;
   };
   updatedAt: string;
   createdAt: string;
@@ -204,10 +415,10 @@ export interface PayloadLockedDocument {
  * via the `definition` "payload-preferences".
  */
 export interface PayloadPreference {
-  id: string;
+  id: number;
   user: {
     relationTo: 'users';
-    value: string | User;
+    value: number | User;
   };
   key?: string | null;
   value?:
@@ -227,7 +438,7 @@ export interface PayloadPreference {
  * via the `definition` "payload-migrations".
  */
 export interface PayloadMigration {
-  id: string;
+  id: number;
   name?: string | null;
   batch?: number | null;
   updatedAt: string;
@@ -272,6 +483,222 @@ export interface MediaSelect<T extends boolean = true> {
   height?: T;
   focalX?: T;
   focalY?: T;
+  sizes?:
+    | T
+    | {
+        thumbnail?:
+          | T
+          | {
+              url?: T;
+              width?: T;
+              height?: T;
+              mimeType?: T;
+              filesize?: T;
+              filename?: T;
+            };
+        square?:
+          | T
+          | {
+              url?: T;
+              width?: T;
+              height?: T;
+              mimeType?: T;
+              filesize?: T;
+              filename?: T;
+            };
+        small?:
+          | T
+          | {
+              url?: T;
+              width?: T;
+              height?: T;
+              mimeType?: T;
+              filesize?: T;
+              filename?: T;
+            };
+        medium?:
+          | T
+          | {
+              url?: T;
+              width?: T;
+              height?: T;
+              mimeType?: T;
+              filesize?: T;
+              filename?: T;
+            };
+        large?:
+          | T
+          | {
+              url?: T;
+              width?: T;
+              height?: T;
+              mimeType?: T;
+              filesize?: T;
+              filename?: T;
+            };
+        xlarge?:
+          | T
+          | {
+              url?: T;
+              width?: T;
+              height?: T;
+              mimeType?: T;
+              filesize?: T;
+              filename?: T;
+            };
+        og?:
+          | T
+          | {
+              url?: T;
+              width?: T;
+              height?: T;
+              mimeType?: T;
+              filesize?: T;
+              filename?: T;
+            };
+      };
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "pages_select".
+ */
+export interface PagesSelect<T extends boolean = true> {
+  title?: T;
+  slug?: T;
+  heroSize?: T;
+  heroText?: T;
+  pageContent?:
+    | T
+    | {
+        'wavy-section'?: T | WavySectionSelect<T>;
+        'showcase-wavy-section'?: T | ShowcaseWavySectionSelect<T>;
+      };
+  folder?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "WavySection_select".
+ */
+export interface WavySectionSelect<T extends boolean = true> {
+  depth?: T;
+  highlightImage?: T;
+  layout?: T;
+  content?:
+    | T
+    | {
+        'text-content'?: T | TextContentSelect<T>;
+        'image-content'?: T | ImageContentSelect<T>;
+      };
+  columnOneContent?:
+    | T
+    | {
+        'text-content'?: T | TextContentSelect<T>;
+        'image-content'?: T | ImageContentSelect<T>;
+      };
+  columnTwoContent?:
+    | T
+    | {
+        'text-content'?: T | TextContentSelect<T>;
+        'image-content'?: T | ImageContentSelect<T>;
+      };
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "TextContent_select".
+ */
+export interface TextContentSelect<T extends boolean = true> {
+  title?: T;
+  richText?: T;
+  links?:
+    | T
+    | {
+        link?:
+          | T
+          | {
+              type?: T;
+              newTab?: T;
+              internalLink?: T;
+              externalLink?: T;
+              mediaLink?: T;
+              linkText?: T;
+            };
+        id?: T;
+      };
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ImageContent_select".
+ */
+export interface ImageContentSelect<T extends boolean = true> {
+  image?: T;
+  caption?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ShowcaseWavySection_select".
+ */
+export interface ShowcaseWavySectionSelect<T extends boolean = true> {
+  upperContent?:
+    | T
+    | {
+        depth?: T;
+        highlightImage?: T;
+        layout?: T;
+        content?:
+          | T
+          | {
+              'text-content'?: T | TextContentSelect<T>;
+              'image-content'?: T | ImageContentSelect<T>;
+            };
+        columnOneContent?:
+          | T
+          | {
+              'text-content'?: T | TextContentSelect<T>;
+              'image-content'?: T | ImageContentSelect<T>;
+            };
+        columnTwoContent?:
+          | T
+          | {
+              'text-content'?: T | TextContentSelect<T>;
+              'image-content'?: T | ImageContentSelect<T>;
+            };
+      };
+  showcaseImage?: T;
+  lowerContent?:
+    | T
+    | {
+        depth?: T;
+        highlightImage?: T;
+        layout?: T;
+        content?:
+          | T
+          | {
+              'text-content'?: T | TextContentSelect<T>;
+              'image-content'?: T | ImageContentSelect<T>;
+            };
+        columnOneContent?:
+          | T
+          | {
+              'text-content'?: T | TextContentSelect<T>;
+              'image-content'?: T | ImageContentSelect<T>;
+            };
+        columnTwoContent?:
+          | T
+          | {
+              'text-content'?: T | TextContentSelect<T>;
+              'image-content'?: T | ImageContentSelect<T>;
+            };
+      };
+  id?: T;
+  blockName?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -280,6 +707,18 @@ export interface MediaSelect<T extends boolean = true> {
 export interface PayloadKvSelect<T extends boolean = true> {
   key?: T;
   data?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "payload-folders_select".
+ */
+export interface PayloadFoldersSelect<T extends boolean = true> {
+  name?: T;
+  folder?: T;
+  documentsAndFolders?: T;
+  folderType?: T;
+  updatedAt?: T;
+  createdAt?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -312,6 +751,124 @@ export interface PayloadMigrationsSelect<T extends boolean = true> {
   batch?: T;
   updatedAt?: T;
   createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "navbar".
+ */
+export interface Navbar {
+  id: number;
+  Links?:
+    | {
+        link?: {
+          type?: ('internal' | 'external' | 'media') | null;
+          newTab?: boolean | null;
+          internalLink?: (number | null) | Page;
+          externalLink?: string | null;
+          mediaLink?: (number | null) | Media;
+          linkText?: string | null;
+        };
+        id?: string | null;
+      }[]
+    | null;
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "footer".
+ */
+export interface Footer {
+  id: number;
+  'Quick Links'?:
+    | {
+        link?: {
+          type?: ('internal' | 'external' | 'media') | null;
+          newTab?: boolean | null;
+          internalLink?: (number | null) | Page;
+          externalLink?: string | null;
+          mediaLink?: (number | null) | Media;
+          linkText?: string | null;
+        };
+        id?: string | null;
+      }[]
+    | null;
+  'Contact Info'?:
+    | {
+        'New Line'?: {
+          root: {
+            type: string;
+            children: {
+              type: any;
+              version: number;
+              [k: string]: unknown;
+            }[];
+            direction: ('ltr' | 'rtl') | null;
+            format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+            indent: number;
+            version: number;
+          };
+          [k: string]: unknown;
+        } | null;
+        id?: string | null;
+      }[]
+    | null;
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "navbar_select".
+ */
+export interface NavbarSelect<T extends boolean = true> {
+  Links?:
+    | T
+    | {
+        link?:
+          | T
+          | {
+              type?: T;
+              newTab?: T;
+              internalLink?: T;
+              externalLink?: T;
+              mediaLink?: T;
+              linkText?: T;
+            };
+        id?: T;
+      };
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "footer_select".
+ */
+export interface FooterSelect<T extends boolean = true> {
+  'Quick Links'?:
+    | T
+    | {
+        link?:
+          | T
+          | {
+              type?: T;
+              newTab?: T;
+              internalLink?: T;
+              externalLink?: T;
+              mediaLink?: T;
+              linkText?: T;
+            };
+        id?: T;
+      };
+  'Contact Info'?:
+    | T
+    | {
+        'New Line'?: T;
+        id?: T;
+      };
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema

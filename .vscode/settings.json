@@ -36,5 +36,7 @@
     "editor.codeActionsOnSave": {
       "source.fixAll.eslint": "explicit"
     }
-  }
+  },
+  "postman.settings.dotenv-detection-notification-visibility": false,
+  "js/ts.tsdk.path": "node_modules/typescript/lib"
 }
