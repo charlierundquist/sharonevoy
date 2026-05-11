@@ -1,8 +1,5 @@
 import {
-  BlobPoint,
   BlobPolygon,
-  generatePolyBlob,
-  generateSmoothPath,
 } from '@/app/utilities/blobFunctions'
 import { Blob } from './Blob'
 

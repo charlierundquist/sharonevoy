@@ -2,7 +2,6 @@ import { sanitizeLink } from '@/app/utilities/sanitizeLink'
 import { Media, Page } from '@/payload-types'
 import Link from 'next/link'
 import React from 'react'
-import { useWindowSize } from '@/app/utilities/useWindowSize'
 import { InsetBlob } from '../Blobs/InsetBlob'
 import { generatePolyBlob } from '@/app/utilities/blobFunctions'
 

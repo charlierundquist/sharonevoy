@@ -87,6 +87,7 @@ export const linkField: linkFieldType = ({ disableLabel = false, overrides = {} 
       name: 'linkText',
       type: 'text',
       maxLength: 15,
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       validate: (value: any) => {
         if (value.length > 15) return 'Must be less than 15 characters'
         return true

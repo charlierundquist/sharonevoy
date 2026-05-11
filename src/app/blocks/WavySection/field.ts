@@ -12,7 +12,7 @@ export function WavySectionFields(disableBackground?: boolean): Field[] {
       required: true,
       defaultValue: 'foreground',
       access: {
-        update: ({ req: { user } }) => {
+        update: () => {
           return disableBackground === true ? false : true
         },
       },

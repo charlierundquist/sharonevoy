@@ -45,36 +45,36 @@ export type WaveBlobsObject = {
 export function generateSmoothPath(points: BlobPoint[], k: number) {
   if (k == null) k = 1
 
-  let data: number[] = []
+  const data: number[] = []
   points.map((point) => {
     data.push(point.x)
     data.push(point.y)
   })
   // data = data.concat(data).slice(0, -3)
 
-  var size = data.length
-  var last = size - 4
+  const size = data.length
+  const last = size - 4
 
-  var path = 'M' + [data[0], data[1]]
+  let path = 'M' + [data[0], data[1]]
 
-  for (var i = 0; i < size - 2; i += 2) {
-    var x0 = i ? data[i - 2] : data[0]
-    var y0 = i ? data[i - 1] : data[1]
+  for (let i = 0; i < size - 2; i += 2) {
+    const x0 = i ? data[i - 2] : data[0]
+    const y0 = i ? data[i - 1] : data[1]
 
-    var x1 = data[i + 0]
-    var y1 = data[i + 1]
+    const x1 = data[i + 0]
+    const y1 = data[i + 1]
 
-    var x2 = data[i + 2]
-    var y2 = data[i + 3]
+    const x2 = data[i + 2]
+    const y2 = data[i + 3]
 
-    var x3 = i !== last ? data[i + 4] : x2
-    var y3 = i !== last ? data[i + 5] : y2
+    const x3 = i !== last ? data[i + 4] : x2
+    const y3 = i !== last ? data[i + 5] : y2
 
-    var cp1x = x1 + ((x2 - x0) / 6) * k
-    var cp1y = y1 + ((y2 - y0) / 6) * k
+    const cp1x = x1 + ((x2 - x0) / 6) * k
+    const cp1y = y1 + ((y2 - y0) / 6) * k
 
-    var cp2x = x2 - ((x3 - x1) / 6) * k
-    var cp2y = y2 - ((y3 - y1) / 6) * k
+    const cp2x = x2 - ((x3 - x1) / 6) * k
+    const cp2y = y2 - ((y3 - y1) / 6) * k
 
     path += 'C' + [cp1x, cp1y, cp2x, cp2y, x2, y2]
   }
@@ -92,7 +92,7 @@ export function generatePolyBlob(
   xMod: number = 1,
   yMod: number = 1,
 ): BlobPolygon {
-  let coords: BlobPoint[] = []
+  const coords: BlobPoint[] = []
   const rot = Math.random() - 0.5
   const theta = (Math.PI * 2) / sides
 
@@ -126,7 +126,7 @@ export function scalePolyBlob(
   radiusIncrease: number,
   wiggle: number = 0,
 ): BlobPolygon {
-  let coords: BlobPoint[] = []
+  const coords: BlobPoint[] = []
   const rot = poly.rot
   const theta = (Math.PI * 2) / poly.sides
 
@@ -165,7 +165,7 @@ export function generateWaveBlob(
   maxHeight: number,
   isInverted: boolean,
 ): WaveBlob {
-  let coords: BlobPoint[] = []
+  const coords: BlobPoint[] = []
   const waveLength = 100 / waveCount
   const heightDiff = Math.abs(maxHeight - minHeight)
   const baseline = isInverted ? minHeight : 100 - minHeight
@@ -204,7 +204,7 @@ export function scaleUpWaveBlob(
   maxHeightIncrease: number,
   wiggle: number = 0,
 ): WaveBlob {
-  let coords: BlobPoint[] = []
+  const coords: BlobPoint[] = []
   const invertMod = wave.isInverted ? 1 : -1
   const increaseDiff = Math.abs(maxHeightIncrease - minheightIncrease)
 
@@ -254,7 +254,7 @@ export function newWaveBlobs(): WaveBlobsObject {
 }
 
 export function shiftPointsByAxis(coords: BlobPoint[], shiftX: number, shiftY: number) {
-  let newCoords: BlobPoint[] = []
+  const newCoords: BlobPoint[] = []
 
   coords.map((point) => {
     if (point.position === 'fixed') {
@@ -289,7 +289,7 @@ export function scaleUpBlob(
   scaleMax: number,
   shift: number,
 ) {
-  let newCoords: BlobPoint[] = []
+  const newCoords: BlobPoint[] = []
 
   const scaleDiff = scaleMax - scaleMin
 

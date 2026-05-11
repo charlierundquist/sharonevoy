@@ -21,7 +21,7 @@ export function Blob({
 }) {
   const maskID = points[0]?.x?.toString() || 'svgMask'
   const zIndex = position === 'bottom' ? -30 : position === 'middle' ? -20 : -10
-  let duration = 2 + Math.random() * 4
+  const duration = 2 + Math.random() * 4
   const randomSeed = Math.random()
   let origin = 'center'
   if (type === 'wave' && randomSeed < 1 / 3) {

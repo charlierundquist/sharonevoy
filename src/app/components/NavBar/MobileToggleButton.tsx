@@ -3,7 +3,6 @@
 import { cssVariables } from '@/app/utilities/cssVariables'
 import { useWindowSize } from '@/app/utilities/useWindowSize'
 import { useEffect, useState } from 'react'
-import { InsetBlob } from '../Blobs/InsetBlob'
 
 export function MobileToggleButton() {
   const [isExpanded, setIsExpanded] = useState(false)
