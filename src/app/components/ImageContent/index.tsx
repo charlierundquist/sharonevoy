@@ -23,7 +23,7 @@ export default function ImageContentComponent(props: {
   }
 
   return (
-    <div className="image-content relative col-[image-start/image-end]">
+    <div className="image-content relative col-[image-start/image-end] max-h-screen">
       <div
         className="absolute h-full scale-110 left-1/2 -translate-x-1/2"
         style={{ aspectRatio: aspectRatio }}

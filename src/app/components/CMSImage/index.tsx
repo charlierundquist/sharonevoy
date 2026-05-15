@@ -74,7 +74,7 @@ export const CMSImage: React.FC<MediaProps> = (props) => {
   return (
     <picture
       className={`${pictureClassName} relative block max-h-full max-w-full`}
-      style={{ width: `${width}px`, aspectRatio: `${width}/${height}` }}
+      style={{ aspectRatio: `${width}/${height}` }}
     >
       <NextImage
         alt={alt || ''}
